@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1068808254696",
+    "firebase_url": "https://projemuber.firebaseio.com",
+    "project_id": "projemuber",
+    "storage_bucket": "projemuber.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068808254696:android:82c1f0b971750313",
+        "android_client_info": {
+          "package_name": "developersancho.uberfit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068808254696-rt8etm2u53egf1tmsmoqkim8ca53q62k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "developersancho.uberfit",
+            "certificate_hash": "220c3812452be84e1770fe3c8898ef5190eb280f"
+          }
+        },
+        {
+          "client_id": "1068808254696-ttmh311kviei82n7b4u67kfe4uidsrbo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADclpcsJDwzAMZAPlnbqfmto89GprG8Tw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068808254696-ttmh311kviei82n7b4u67kfe4uidsrbo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
