@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -87,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
 
                 dialog.dismiss();
 
+                btnSignIn.setEnabled(false);
+
                 // Check validate
                 if (TextUtils.isEmpty(edtEmail.getText().toString())) {
                     Snackbar.make(mainLayout, "Please enter email address", Snackbar.LENGTH_SHORT).show();
@@ -103,12 +106,15 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+                final SpotsDialog waitingDialog = new SpotsDialog(MainActivity.this);
+                waitingDialog.show();
 
                 // login
                 auth.signInWithEmailAndPassword(edtEmail.getText().toString(), edtPassword.getText().toString())
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
+                                waitingDialog.dismiss();
                                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
                                 finish();
                             }
@@ -116,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                waitingDialog.dismiss();
                                 Snackbar.make(mainLayout, "Failed " + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                                btnSignIn.setEnabled(true);
                             }
                 });
 
@@ -194,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                                 user.setPhone(edtPhone.getText().toString());
                                 user.setPassword(edtPassword.getText().toString());
 
-                                // using email for key
+                                // set user
                                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
