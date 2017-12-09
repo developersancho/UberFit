@@ -1,4 +1,4 @@
-package developersancho.uberfit;
+package developersancho.uberfit.model;
 
 /**
  * Created by developersancho on 7.12.2017.

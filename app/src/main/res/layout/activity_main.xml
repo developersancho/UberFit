@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/uber_background"
     android:id="@+id/mainLayout"
-    tools:context="developersancho.uberfit.MainActivity">
+    tools:context="developersancho.uberfit.activity.MainActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"
