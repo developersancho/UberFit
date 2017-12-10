@@ -224,7 +224,7 @@ public class WelcomeActivity extends FragmentActivity implements OnMapReadyCallb
             }
         });
         //geo fire
-        drivers = FirebaseDatabase.getInstance().getReference("Drivers");
+        drivers = FirebaseDatabase.getInstance().getReference(Common.driver_tbl);
         geoFire = new GeoFire(drivers);
 
         setUpLocation();
@@ -549,4 +549,5 @@ public class WelcomeActivity extends FragmentActivity implements OnMapReadyCallb
                 }
         }
     }
+
 }

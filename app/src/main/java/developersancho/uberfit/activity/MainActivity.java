@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import developersancho.uberfit.R;
+import developersancho.uberfit.common.Common;
 import developersancho.uberfit.model.User;
 import dmax.dialog.SpotsDialog;
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         //Init Firebase
         auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
-        users = db.getReference("Users");
+        users = db.getReference(Common.user_driver_tbl);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
