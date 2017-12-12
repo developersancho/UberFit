@@ -2,6 +2,7 @@ package developersancho.uberfit.common;
 
 import android.location.Location;
 
+import developersancho.uberfit.model.User;
 import developersancho.uberfit.remote.FCMClient;
 import developersancho.uberfit.remote.IFCMService;
 import developersancho.uberfit.remote.IGoogleAPI;
@@ -19,6 +20,8 @@ public class Common {
     public static final String token_tbl = "Tokens";
 
     public static Location mLastLocation = null;
+
+    public static User currentUser;
 
     public static final String baseURL = "https://maps.googleapis.com";
     public static final String fcmURL = "https://fcm.googleapis.com/";

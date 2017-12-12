@@ -17,8 +17,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import developersancho.uberfit.R;
@@ -115,6 +118,22 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 waitingDialog.dismiss();
+
+                                FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                Common.currentUser = dataSnapshot.getValue(User.class);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+
                                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
                                 finish();
                             }
@@ -126,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                                 Snackbar.make(mainLayout, "Failed " + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                                 btnSignIn.setEnabled(true);
                             }
-                });
+                        });
 
             }
         });
