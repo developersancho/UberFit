@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:11.4.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
 }
 
 

@@ -31,6 +31,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -57,6 +58,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.maps.android.SphericalUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -105,6 +107,8 @@ public class WelcomeActivity extends FragmentActivity implements OnMapReadyCallb
     private int index, next;
     //private Button btnGo;
     private PlaceAutocompleteFragment places;
+    AutocompleteFilter typeFilter;
+
     private String destination;
     private PolylineOptions polylineOptions, blackPolylineOptions;
     private Polyline blackPolyline, greyPolyline;
@@ -234,6 +238,12 @@ public class WelcomeActivity extends FragmentActivity implements OnMapReadyCallb
                 getDirection();
             }
         });*/
+
+        // Places API
+        typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                .setTypeFilter(3)
+                .build();
 
         places = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         places.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -487,6 +497,22 @@ public class WelcomeActivity extends FragmentActivity implements OnMapReadyCallb
             if (location_switch.isChecked()) {
                 final double latitude = Common.mLastLocation.getLatitude();
                 final double longitude = Common.mLastLocation.getLongitude();
+
+                // create LatLng from mLastLocation and this is center point
+                LatLng center = new LatLng(latitude, longitude);
+                // distance in metters
+                // heading 0 is northside, 90 is east, 180 is south and 270 is west
+                LatLng northSide = SphericalUtil.computeOffset(center, 100000, 0);
+                LatLng southSide = SphericalUtil.computeOffset(center, 100000, 180);
+
+                LatLngBounds bounds = LatLngBounds.builder()
+                        .include(northSide)
+                        .include(southSide)
+                        .build();
+
+                places.setBoundsBias(bounds);
+                places.setFilter(typeFilter);
+
 
                 // Update firebase
                 geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
