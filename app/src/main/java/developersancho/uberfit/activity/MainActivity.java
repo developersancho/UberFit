@@ -9,12 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase db;
     DatabaseReference users;
 
+    TextView txtForgotPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
         btnRegister = (Button) findViewById(R.id.btnRegister);
 
         mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
+
+        txtForgotPassword = (TextView) findViewById(R.id.txt_forgot_password);
+        txtForgotPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                showForgotPasswordDialog();
+                return false;
+            }
+        });
 
         //Init Firebase
         auth = FirebaseAuth.getInstance();
@@ -67,6 +82,55 @@ public class MainActivity extends AppCompatActivity {
                 showSignInDialog();
             }
         });
+
+    }
+
+    private void showForgotPasswordDialog() {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("FORGOT PASSWORD");
+        dialog.setMessage("Please enter your email");
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View forgot_password_view = layoutInflater.inflate(R.layout.dialog_forgot_password, null);
+
+        final MaterialEditText edtEmail = forgot_password_view.findViewById(R.id.edtEmailForForgotPassword);
+
+        dialog.setView(forgot_password_view);
+
+        dialog.setPositiveButton("RESET", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+                final SpotsDialog waitingDialog = new SpotsDialog(MainActivity.this);
+                waitingDialog.show();
+
+                auth.sendPasswordResetEmail(edtEmail.getText().toString().trim())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                dialog.dismiss();
+                                waitingDialog.dismiss();
+                                Snackbar.make(mainLayout, "Reset password link has been sent", Snackbar.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        dialog.dismiss();
+                        waitingDialog.dismiss();
+                        Snackbar.make(mainLayout, "Failed " + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        dialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
 
     }
 

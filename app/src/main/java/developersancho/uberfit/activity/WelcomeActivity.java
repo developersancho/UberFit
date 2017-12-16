@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -219,7 +220,7 @@ public class WelcomeActivity extends FragmentActivity implements OnMapReadyCallb
                     stopLocationUpdate();
                     mCurrent.remove();
                     mMap.clear();
-                    handler.removeCallbacks(drawPathRunnable);
+                    //handler.removeCallbacks(drawPathRunnable);
                     Snackbar.make(mapFragment.getView(), "You are offline.", Snackbar.LENGTH_SHORT).show();
                 }
 
@@ -522,7 +523,7 @@ public class WelcomeActivity extends FragmentActivity implements OnMapReadyCallb
                         if (mCurrent != null)
                             mCurrent.remove();
                         mCurrent = mMap.addMarker(new MarkerOptions()
-                                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                                 .position(new LatLng(latitude, longitude))
                                 .title("You"));
 
@@ -574,13 +575,13 @@ public class WelcomeActivity extends FragmentActivity implements OnMapReadyCallb
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.uber_style_map));
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setTrafficEnabled(false);
         mMap.setIndoorEnabled(false);
         mMap.setBuildingsEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
     }
 
     @Override
