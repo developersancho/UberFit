@@ -4,4 +4,10 @@
     <string name="google_direction_api">AIzaSyAggA3DRFEHIIPnc6cYV8Cpa2wctiK1q_g</string>
     <string name="title_activity_driver_tracking">Map</string>
     <string name="title_activity_trip_detail">Map</string>
+    <string name="title_activity_driver_home">DriverHomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
